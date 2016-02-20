@@ -29,6 +29,21 @@ Personal = React.createClass({
         });
     },
 
+    targetDataGetter(targetDataIndex) {
+        return [this.data.user_chair.values[targetDataIndex]];
+    },
+
+    targetLegendGetter(targetDataIndex) {
+        let inlineStyle = {color: this.data.user_chair.values[targetDataIndex].color};
+
+        return (
+            <li key={this.currentUser._id}>
+                {this.currentUser.username + ": "}
+                <span style={inlineStyle}>{this.data.user_chair.values[targetDataIndex].color}</span>
+            </li>
+        );
+    },
+
     render() {
         return (
             <div>
@@ -43,39 +58,40 @@ Personal = React.createClass({
                             <option>Select One</option>
                             {this.renderChairs()}
                         </select>
+                        {this.data.user_chair ? 
+                        <div id="graphs">
+                            <div className="panel panel-primary">
+                                <div className="panel-heading">Movement</div>
+                                <div className="panel-body>">
+                                    <LiveGraph
+                                        graphID="movementGraph"
+                                        trendDatas={this.targetDataGetter(0)}
+                                        yMin={0.0}
+                                        yMax={1.0}
+                                        outerWidth={640}
+                                        outerHeight={160}
+                                        margin={{left:40, right:20, top:20, bottom:20}} />
+                                </div>
+                            </div>
+                            <div className="panel panel-primary">
+                                <div className="panel-heading">Spin</div>
+                                <div className="panel-body>">
+                                    <LiveGraph
+                                        graphID="spinGraph"
+                                        trendDatas={this.targetDataGetter(1)}
+                                        yMin={0.0}
+                                        yMax={1.0}
+                                        outerWidth={640}
+                                        outerHeight={160}
+                                        margin={{left:40, right:20, top:20, bottom:20}} />
+                                </div>
+                            </div>
+                        </div>
+                        : ""
+                        }
                     </div>
-                    : <h1> Please Log In </h1>
+                : <h1 className="login-prompt"> Please Log In </h1>
                 }
-                {this.data.user_chair ?
-                <div className="graphs">
-                    <div className="panel panel-primary">
-                        <div className="panel-heading">Movement</div>
-                        <div className="panel-body>">
-                            <LiveGraph
-                                graphID="movementGraph"
-                                trendDatas={this.data.user_chair.values}
-                                yMin={0.0}
-                                yMax={1.0}
-                                outerWidth={640}
-                                outerHeight={160}
-                                margin={{left:40, right:20, top:20, bottom:20}} />
-                        </div>
-                    </div>
-                    <div className="panel panel-primary">
-                        <div className="panel-heading">Spin</div>
-                        <div className="panel-body>">
-                            <LiveGraph
-                                graphID="spinGraph"
-                                trendDatas={this.data.user_chair.values}
-                                yMin={0.0}
-                                yMax={1.0}
-                                outerWidth={640}
-                                outerHeight={160}
-                                margin={{left:40, right:20, top:20, bottom:20}} />
-                        </div>
-                    </div>
-                </div>
-                : ""}
             </div>
         );
     }
