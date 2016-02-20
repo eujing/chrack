@@ -1,5 +1,7 @@
 const {Router, Route, IndexRoute,  browserHistory} = ReactRouter;
 
+Chairs = new Mongo.Collection("chairs");
+
 if (Meteor.isClient) {
     Accounts.ui.config({
         passwordSignupFields: "USERNAME_ONLY"
