@@ -3,3 +3,32 @@
     color: #eee;
     background-color: rgba(255, 255, 255, 0.1);
 }
+
+svg-container {
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    vertical-align: middle;
+    width: 100%;
+}
+
+svg {
+    font: 7px sans-serif;
+}
+
+.tick text {
+    fill: #797979;
+    stroke: none;
+}
+
+.line {
+    fill: none;
+    stroke-width: 1px;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #797979;
+    shape-rendering: auto;
+}
