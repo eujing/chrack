@@ -32,9 +32,10 @@ LiveGraph = React.createClass({
                 .attr("width", width)
                 .attr("height", height);
 
-        let realXMin = d3.min(d3.min(p.trendDatas, (trendData) => trendData.data), (d) => d.x);
+        //let realXMin = d3.min(d3.min(p.trendDatas, (trendData) => trendData.data), (d) => d.x);
 
         let realXMax = d3.max(d3.max(p.trendDatas, (trendData) => trendData.data), (d) => d.x);
+        let realXMin = new Date(realXMax.valueOf()).setSeconds(realXMax.getSeconds() - 30);
 
         this.xScale = d3.time.scale()
                         .domain([realXMin, realXMax])
@@ -89,9 +90,10 @@ LiveGraph = React.createClass({
     updateGraph(props) {
         let svg = d3.select("#" + props.graphID).transition();
 
-        let realXMin = d3.min(d3.min(props.trendDatas, (trendData) => trendData.data), (d) => d.x);
+        //let realXMin = d3.min(d3.min(props.trendDatas, (trendData) => trendData.data), (d) => d.x);
 
         let realXMax = d3.max(d3.max(props.trendDatas, (trendData) => trendData.data), (d) => d.x);
+        let realXMin = new Date(realXMax.valueOf()).setSeconds(realXMax.getSeconds() - 30);
 
         this.xScale.domain([realXMin, realXMax]);
         this.yScale.domain([props.yMin, props.yMax]);
@@ -102,6 +104,16 @@ LiveGraph = React.createClass({
                 .ease("linear")
                 .attr("d", this.lines[dataIndex](trendData.data));
         });
+
+        svg.select(".x.axis")
+            .duration(1000)
+            .ease("linear")
+            .call(this.xAxis);
+
+        svg.select(".y.axis")
+            .duration(1000)
+            .ease("linear")
+            .call(this.yAxis);
     },
 
     render() {
