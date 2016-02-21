@@ -15,7 +15,7 @@
 char ssid[] = "HUAWEI-6E43";            // your network SSID (name)
 char pass[] = "im0a2r6q";        // your network password
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
-char server[] = "TO_DEFINE";
+char server[] = "192.168.8.101";
 
 // class default I2C address is 0x68
 // specific I2C addresses may be passed as a parameter here
@@ -68,23 +68,24 @@ void setup() {
   // verify connection
   Serial.println("Testing device connections...");
   Serial.println(accelgyro.testConnection() ? "MPU6050 connection successful" : "MPU6050 connection failed");
-
+  client.connect(server, 1689);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
   // read raw accel/gyro measurements from device
   accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
-  Serial.print("a/g:\t");
-  Serial.print(ax); Serial.print("\t");
-  Serial.print(ay); Serial.print("\t");
-  Serial.print(az); Serial.print("\t");
-  Serial.print(gx); Serial.print("\t");
-  Serial.print(gy); Serial.print("\t");
-  Serial.println(gz);
 
-  if (client.connect(server, 80)) {
-    Serial.println("Sending to server");
-    client.println("Hi");
+  if (true) {
+    Serial.print("ax = "); Serial.println(ax);
+    client.print("{\"name\": \"Chair 1\", \"ax\":"+String(ax)+
+      ", \"ay\":"+String(ay)+
+      ", \"az\":"+String(az)+
+      ", \"gx\":"+String(gx)+
+      ", \"gy\":"+String(gy)+
+      ", \"gz\":"+String(gz)+"}");
+     delay(1000);
+  } else {
+    client.stop();
   }
 }
